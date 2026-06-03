@@ -7,6 +7,7 @@ class ContentType(str, Enum):
     text = "text"
     email = "email"
     url = "url"
+    sms = "sms"  # SMS/messengers — sent by Analyzer page frontend
 
 
 class Verdict(str, Enum):
@@ -24,7 +25,7 @@ class AnalysisRequest(BaseModel):
     model_config = {
         "json_schema_extra": {
             "example": {
-                "content": "Congratulations! You won $1,000,000. Send your SSN to claim your prize.",
+                "content": "Congratulations! You won $1,000,000. Send your SSN to claim.",
                 "content_type": "text",
                 "language": "auto",
             }
@@ -46,7 +47,6 @@ class AnalysisResponse(BaseModel):
     recommendations: list[str] = []
     model_used: str
     analysis_time_ms: int
-    # Похожие кейсы из Knowledge Base (пусто если KB недоступна)
     similar_cases: list[dict[str, Any]] = []
 
     def format_text(self) -> str:
@@ -54,5 +54,6 @@ class AnalysisResponse(BaseModel):
         recs = "\n".join(f"  {i+1}. {r}" for i, r in enumerate(self.recommendations))
         return (
             f"Verdict: {self.verdict.value} - {self.probability}%\n\n"
-            f"Red flags:\n{flags}\n\nExplanation:\n{self.explanation}\n\nRecommendations:\n{recs}"
+            f"Red flags:\n{flags}\n\nExplanation:\n{self.explanation}\n\n"
+            f"Recommendations:\n{recs}"
         )

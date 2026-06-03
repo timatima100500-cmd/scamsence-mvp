@@ -13,7 +13,8 @@ def create_app() -> FastAPI:
     )
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["http://localhost:8501"],
+        # allow_origins=["*"] — Streamlit ports vary, ngrok URL changes on restart
+        allow_origins=["*"],
         allow_methods=["*"],
         allow_headers=["*"],
     )
