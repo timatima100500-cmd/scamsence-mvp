@@ -14,6 +14,10 @@ git push -u origin main
 
 
 
-ScamSense RepoN : 
-**ghp\_N67uF1Si1mg53vBpeUK47pyhRsKoer0CRQZ4**
+**ScamSense RepoN** : 
+ghp\_N67uF1Si1mg53vBpeUK47pyhRsKoer0CRQZ4
+
+git remote set-url origin https://timatima100500-cmd:ghp\_N67uF1Si1mg53vBpeUK47pyhRsKoer0CRQZ4@github.com/timatima100500-cmd/scamsence-mvp.git
+
+git push --force
 
