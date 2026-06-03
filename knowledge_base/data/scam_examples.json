@@ -1,0 +1,368 @@
+[
+  {
+    "id": "sc_001",
+    "type": "phishing_email",
+    "language": "en",
+    "text": "Dear Customer, Your account has been suspended. Click here to verify your identity immediately or your account will be permanently deleted within 24 hours.",
+    "verdict": "Scam",
+    "confidence": 97,
+    "red_flags": [
+      "urgency",
+      "impersonation",
+      "account_threat",
+      "suspicious_link"
+    ]
+  },
+  {
+    "id": "sc_002",
+    "type": "investment_scam",
+    "language": "en",
+    "text": "Guaranteed 500% returns in just 30 days! Join our exclusive crypto trading group. Limited spots available. DM me now! Bitcoin only, no banks.",
+    "verdict": "Scam",
+    "confidence": 99,
+    "red_flags": [
+      "too_good_to_be_true",
+      "urgency",
+      "crypto_payment",
+      "guaranteed_returns"
+    ]
+  },
+  {
+    "id": "sc_003",
+    "type": "tech_support",
+    "language": "en",
+    "text": "Microsoft Technical Support: We detected a virus on your computer. Call us immediately at 1-800-XXX-XXXX. Do not turn off your computer. Your personal data is at risk.",
+    "verdict": "Scam",
+    "confidence": 98,
+    "red_flags": [
+      "impersonation",
+      "urgency",
+      "tech_support_scam",
+      "fear_tactic"
+    ]
+  },
+  {
+    "id": "sc_004",
+    "type": "prize_scam",
+    "language": "en",
+    "text": "Congratulations! You have been selected as our lucky winner. You have won a brand new iPhone 15 Pro! To claim your prize, provide your credit card details for the $2 shipping fee.",
+    "verdict": "Scam",
+    "confidence": 99,
+    "red_flags": [
+      "too_good_to_be_true",
+      "fake_selection",
+      "payment_red_flag",
+      "data_harvesting"
+    ]
+  },
+  {
+    "id": "sc_005",
+    "type": "romance_scam",
+    "language": "en",
+    "text": "My darling, I love you so much. I am stuck at the airport in Dubai and my wallet was stolen. Please send $500 via Western Union and I will pay you back double when I arrive.",
+    "verdict": "Scam",
+    "confidence": 98,
+    "red_flags": [
+      "romance_scam",
+      "payment_red_flag",
+      "western_union",
+      "emotional_manipulation"
+    ]
+  },
+  {
+    "id": "sc_006",
+    "type": "pig_butchering",
+    "language": "en",
+    "text": "Hi! I'm Lily, I accidentally texted the wrong number. You seem interesting, want to chat? I work in finance and have been making great returns on crypto lately. I can show you how.",
+    "verdict": "Likely Scam",
+    "confidence": 85,
+    "red_flags": [
+      "pig_butchering",
+      "crypto_mention",
+      "unsolicited_contact"
+    ]
+  },
+  {
+    "id": "sc_007",
+    "type": "government_impersonation",
+    "language": "en",
+    "text": "IRS FINAL NOTICE: You owe $3,420 in back taxes. A warrant has been issued for your arrest. To avoid arrest call 1-888-XXX-XXXX within 1 hour and pay via gift cards.",
+    "verdict": "Scam",
+    "confidence": 100,
+    "red_flags": [
+      "impersonation",
+      "urgency",
+      "government_threat",
+      "gift_card_payment",
+      "arrest_threat"
+    ]
+  },
+  {
+    "id": "sc_008",
+    "type": "advance_fee",
+    "language": "en",
+    "text": "CONFIDENTIAL: I am Barrister Johnson, attorney to late Mr. David Smith. He died without a will and left $15.5 million. You share his surname so you are the beneficiary. Reply urgently.",
+    "verdict": "Scam",
+    "confidence": 99,
+    "red_flags": [
+      "too_good_to_be_true",
+      "advance_fee",
+      "urgency",
+      "suspicious_sender"
+    ]
+  },
+  {
+    "id": "sc_009",
+    "type": "data_harvesting",
+    "language": "en",
+    "text": "Your PayPal account has been limited. Please provide your Social Security Number, date of birth, and bank account number to restore full access at verify-paypal-secure.net",
+    "verdict": "Scam",
+    "confidence": 100,
+    "red_flags": [
+      "data_harvesting",
+      "impersonation",
+      "ssn_request",
+      "suspicious_link"
+    ]
+  },
+  {
+    "id": "sc_010",
+    "type": "url_phishing",
+    "language": "en",
+    "text": "Your Amazon package could not be delivered. Update your shipping address and payment info at: amaz0n-delivery-update.com/tracking/verify",
+    "verdict": "Scam",
+    "confidence": 96,
+    "red_flags": [
+      "suspicious_link",
+      "impersonation",
+      "data_harvesting",
+      "typosquatting"
+    ]
+  },
+  {
+    "id": "sc_011",
+    "type": "bank_phishing",
+    "language": "ru",
+    "text": "Sberbank: Vasha karta zablokirovana iz-za podozritelnoy aktivnosti. Dlya razblokirovki srochno pozvonite i soobshchite CVV kod i PIN.",
+    "verdict": "Scam",
+    "confidence": 99,
+    "red_flags": [
+      "impersonation",
+      "urgency",
+      "data_harvesting",
+      "bank_scam"
+    ]
+  },
+  {
+    "id": "sc_012",
+    "type": "government_impersonation",
+    "language": "ru",
+    "text": "Uvazhaemiy grazhdanin, FSB Rossii soobschaet: na vashe imya oformlen kredit moshennikov. Dlya otmeny perevedte dengi na bezopasniy schet nemedlenno. Nikomu ne soobschayte ob etom.",
+    "verdict": "Scam",
+    "confidence": 100,
+    "red_flags": [
+      "impersonation",
+      "urgency",
+      "secrecy_instruction",
+      "government_threat"
+    ]
+  },
+  {
+    "id": "sc_013",
+    "type": "investment_scam",
+    "language": "ru",
+    "text": "Investiruy v kriptu vmeste so mnoy! Garantirovannyy dokhod 300% v mesyats. Ya uzhe zarabotal 1 mln rubley. Tolko bitcoin, tolko hardkor. Pishi v lichku!",
+    "verdict": "Scam",
+    "confidence": 99,
+    "red_flags": [
+      "too_good_to_be_true",
+      "crypto_payment",
+      "guaranteed_returns"
+    ]
+  },
+  {
+    "id": "sc_014",
+    "type": "prize_scam",
+    "language": "ru",
+    "text": "Vy vyigrali avtomobil BMW X5 v nashey aktsii! Dlya polucheniya priza vvedite nomer karty, srok deystviya i CVV na nashem sayte bmw-prize-ru.com v techenie 24 chasov.",
+    "verdict": "Scam",
+    "confidence": 100,
+    "red_flags": [
+      "too_good_to_be_true",
+      "data_harvesting",
+      "urgency",
+      "suspicious_link"
+    ]
+  },
+  {
+    "id": "sc_015",
+    "type": "romance_scam",
+    "language": "ru",
+    "text": "Privet, ty takoy interesnyy chelovek. Ya rabotayu za rubezhom vrachom. Mne nuzhna tvoya pomoshch, perevedi 15000 rubley, ya zastyal v aeroportu. Klyanus, vernu vse s protsentami.",
+    "verdict": "Scam",
+    "confidence": 97,
+    "red_flags": [
+      "romance_scam",
+      "payment_red_flag",
+      "emotional_manipulation"
+    ]
+  },
+  {
+    "id": "sc_016",
+    "type": "account_takeover",
+    "language": "ru",
+    "text": "Sluzhba podderzhki Gosuslugi: obnaruzhena popytka vzloma vashego akkaunta. Dlya zashchity dannykh soobshchite nam kod iz SMS i parol ot lichnogo kabineta.",
+    "verdict": "Scam",
+    "confidence": 100,
+    "red_flags": [
+      "impersonation",
+      "data_harvesting",
+      "urgency",
+      "password_request"
+    ]
+  },
+  {
+    "id": "sc_017",
+    "type": "job_scam",
+    "language": "en",
+    "text": "WORK FROM HOME OPPORTUNITY! Earn $5000/week with just 2 hours a day! No experience needed. Just pay $99 registration fee to get your starter kit. Limited positions available!",
+    "verdict": "Scam",
+    "confidence": 97,
+    "red_flags": [
+      "too_good_to_be_true",
+      "advance_fee",
+      "urgency"
+    ]
+  },
+  {
+    "id": "sc_018",
+    "type": "family_impersonation",
+    "language": "en",
+    "text": "Hi grandma, it is me, Jake. I am in trouble. I got into a car accident and need $2000 for bail. Please do not tell mom. Send it through Zelle right away.",
+    "verdict": "Likely Scam",
+    "confidence": 88,
+    "red_flags": [
+      "family_impersonation",
+      "urgency",
+      "secrecy_instruction",
+      "payment_red_flag"
+    ]
+  },
+  {
+    "id": "sc_019",
+    "type": "suspicious",
+    "language": "en",
+    "text": "Hi, I found your number online. I am offering a special deal on car insurance. Rates 50% below market. Just need your driver license number and SSN to get started.",
+    "verdict": "Suspicious",
+    "confidence": 72,
+    "red_flags": [
+      "data_harvesting",
+      "too_good_to_be_true",
+      "unsolicited_contact"
+    ]
+  },
+  {
+    "id": "sc_020",
+    "type": "billing_scam",
+    "language": "en",
+    "text": "Your subscription will renew for $299 tomorrow. To cancel, call 1-888-XXX-XXXX immediately. This is your final notice. Failure to call will result in automatic charge.",
+    "verdict": "Suspicious",
+    "confidence": 65,
+    "red_flags": [
+      "urgency",
+      "unsolicited_billing",
+      "final_notice"
+    ]
+  },
+  {
+    "id": "sc_021",
+    "type": "crypto_giveaway",
+    "language": "en",
+    "text": "Send 0.1 BTC to this address and receive 1 BTC back! Elon Musk is doing a crypto giveaway. This offer expires in 10 minutes. Address: bc1qXXXXXX",
+    "verdict": "Scam",
+    "confidence": 100,
+    "red_flags": [
+      "too_good_to_be_true",
+      "urgency",
+      "crypto_payment",
+      "celebrity_impersonation"
+    ]
+  },
+  {
+    "id": "sc_022",
+    "type": "smishing",
+    "language": "ru",
+    "text": "Tinkoff: Vy sovershili perevod 47900 rub. Esli eto byli ne vy, pozvonite 8-800-XXX-XXXX i nazovite kod 9412 dlya otmeny operatsii.",
+    "verdict": "Scam",
+    "confidence": 96,
+    "red_flags": [
+      "impersonation",
+      "urgency",
+      "social_engineering",
+      "bank_scam"
+    ]
+  },
+  {
+    "id": "leg_001",
+    "type": "legitimate",
+    "language": "en",
+    "text": "Your Amazon order #123-456 has shipped. Track your package at amazon.com/orders. Delivery expected June 5.",
+    "verdict": "Legitimate",
+    "confidence": 95,
+    "red_flags": []
+  },
+  {
+    "id": "leg_002",
+    "type": "legitimate",
+    "language": "en",
+    "text": "Hi, can we reschedule our meeting from Tuesday to Wednesday at 2pm? Let me know if that works for you.",
+    "verdict": "Legitimate",
+    "confidence": 99,
+    "red_flags": []
+  },
+  {
+    "id": "leg_003",
+    "type": "legitimate",
+    "language": "en",
+    "text": "Your bank statement for June is ready. Log in to your account at chase.com to view it. No action is required.",
+    "verdict": "Legitimate",
+    "confidence": 92,
+    "red_flags": []
+  },
+  {
+    "id": "leg_004",
+    "type": "legitimate",
+    "language": "ru",
+    "text": "Privet! Napominayu o vstreche zavtra v 15:00 v kafe. Esli chto-to izmenitsya, napishi.",
+    "verdict": "Legitimate",
+    "confidence": 99,
+    "red_flags": []
+  },
+  {
+    "id": "leg_005",
+    "type": "legitimate",
+    "language": "ru",
+    "text": "Vash zakaz v magazine Wildberries otpravlen. Ozhidaemaya data dostavki: 6 iyunya. Otsledit: wb.ru/orders",
+    "verdict": "Legitimate",
+    "confidence": 94,
+    "red_flags": []
+  },
+  {
+    "id": "leg_006",
+    "type": "legitimate",
+    "language": "en",
+    "text": "Reminder: your dentist appointment is scheduled for June 10 at 10:30 AM. Call us at (555) 123-4567 to reschedule.",
+    "verdict": "Legitimate",
+    "confidence": 98,
+    "red_flags": []
+  },
+  {
+    "id": "leg_007",
+    "type": "legitimate",
+    "language": "en",
+    "text": "Your password was recently changed. If you did not make this change, please contact support using the number on the back of your card.",
+    "verdict": "Legitimate",
+    "confidence": 88,
+    "red_flags": []
+  }
+]

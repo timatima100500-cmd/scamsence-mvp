@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+eggs/
+*.egg
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment variables (НИКОГДА не коммитим секреты!)
+.env
+
+# Database
+*.db
+*.sqlite3
+
+# ChromaDB local storage
+chroma_db/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Audio temp files (голосовой модуль)
+temp_audio/
+*.wav
+*.mp3
+*.ogg
+
+# Jupyter
+.ipynb_checkpoints/

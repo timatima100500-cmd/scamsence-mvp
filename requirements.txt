@@ -1,0 +1,35 @@
+# === ScamSence MVP — Зависимости ===
+# Установка: pip install -r requirements.txt
+
+# --- Backend (FastAPI) ---
+fastapi==0.115.0          # Веб-фреймворк для API
+uvicorn==0.30.0           # ASGI сервер для FastAPI
+pydantic==2.9.0           # Валидация данных (встроен в FastAPI)
+
+# --- Frontend ---
+streamlit==1.38.0         # UI фреймворк (быстрый MVP)
+
+# --- LLM ---
+anthropic==0.34.0         # Claude API клиент (для сложных запросов)
+httpx==0.27.0             # HTTP клиент (для Ollama API)
+
+# --- Knowledge Base ---
+chromadb==0.5.0           # Векторная БД (локально)
+sentence-transformers==3.0.0  # Эмбеддинги (бесплатные, локальные)
+
+# --- Database ---
+aiosqlite==0.20.0         # Async SQLite (rate limiter, история)
+
+# --- Voice Analysis (Pro) ---
+# openai-whisper==20231117  # Раскомментировать для голосового модуля
+# torch>=2.0               # PyTorch для Whisper
+
+# --- Утилиты ---
+python-dotenv==1.0.1      # Загрузка .env файлов
+loguru==0.7.2             # Красивое логирование
+requests==2.32.0          # HTTP запросы (URL check)
+
+# --- Тесты ---
+pytest==8.3.0             # Тест-фреймворк
+pytest-asyncio==0.24.0    # Async тесты
+httpx==0.27.0             # TestClient для FastAPI

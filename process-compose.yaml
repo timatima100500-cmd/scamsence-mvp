@@ -1,0 +1,22 @@
+# process-compose.yaml — только ScamSence API
+# Hermes и OpenWhispr запускай через start-all-servers.ps1 как раньше
+#
+# Запуск: process-compose up
+# Стоп:   Ctrl+C  или  process-compose down
+
+version: "0.5"
+
+processes:
+  scamsence:
+    command: "pwsh -Command \"cd 'C:/Users/Acer/Documents/Claude/Projects/ScamSence_MVP'; .venv/Scripts/Activate; uvicorn backend.app:app --reload --host 127.0.0.1 --port 8000\""
+    readiness_probe:
+      http_get:
+        host: 127.0.0.1
+        port: 8000
+        path: /health
+      initial_delay_seconds: 5
+      period_seconds: 3
+      failure_threshold: 5
+    availability:
+      restart: on_failure
+      max_restarts: 3

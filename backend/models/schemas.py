@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Any
 from pydantic import BaseModel, Field
 
 
@@ -16,14 +17,14 @@ class Verdict(str, Enum):
 
 
 class AnalysisRequest(BaseModel):
-    content: str = Field(..., min_length=10, max_length=10000)
+    content: str = Field(..., min_length=10, max_length=50000)
     content_type: ContentType = ContentType.text
     language: str = "auto"
 
     model_config = {
         "json_schema_extra": {
             "example": {
-                "content": "Pozdravlyaem! Vy vyigrali iPhone 15. Pereydte po ssylke nemedlenno!",
+                "content": "Congratulations! You won $1,000,000. Send your SSN to claim your prize.",
                 "content_type": "text",
                 "language": "auto",
             }
@@ -45,6 +46,8 @@ class AnalysisResponse(BaseModel):
     recommendations: list[str] = []
     model_used: str
     analysis_time_ms: int
+    # Похожие кейсы из Knowledge Base (пусто если KB недоступна)
+    similar_cases: list[dict[str, Any]] = []
 
     def format_text(self) -> str:
         flags = "\n".join(f"  - {f.description}" for f in self.red_flags)

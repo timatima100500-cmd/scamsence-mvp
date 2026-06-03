@@ -1,0 +1,13 @@
+# ScamSence MVP — Docker Compose
+# TODO: День 12 — настроить compose
+version: '3.8'
+services:
+  scamsence:
+    build: ..
+    ports:
+      - "8000:8000"
+      - "8501:8501"
+    env_file:
+      - ../.env
+    volumes:
+      - ../chroma_data:/app/chroma_data

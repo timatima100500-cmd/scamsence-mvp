@@ -1,0 +1,48 @@
+1. Модели: В Cowork/Claude Desktop есть переключатель модели прямо в окне чата (обычно вверху или внизу, рядом с полем ввода — выпадающий список). Можешь переключить в любой момент, не теряя контекст разговора.
+Мои рекомендации когда какую использовать:
+
+Haiku — рутина: создание файлов по шаблону, простые правки, генерация boilerplate кода, коммиты. ~90% нашей работы по структуре.
+Sonnet — основная работа: написание логики, дебаг, архитектурные решения. Лучший баланс скорость/качество.
+Opus — сложные задачи: проектирование промптов для анализа скамов, review архитектуры, нетривиальный дебаг. Используй точечно.
+
+3. SSH + GitHub:
+Я не могу запускать команды на твоей Windows-машине напрямую — sandbox изолирован. Вот команды, которые тебе нужно выполнить в PowerShell на своём компьютере:
+a) Генерация SSH ключа:
+
+# Генерируем SSH ключ (Ed25519 — самый современный и безопасный)
+ssh-keygen -t ed25519 -C "timatima100500@gmail.com"
+
+# Когда спросит путь — просто нажми Enter (по умолчанию C:\Users\Acer\.ssh\id_ed25519)
+# Когда спросит passphrase — можешь оставить пустым (Enter) или задать пароль
+
+# Запускаем SSH agent
+Get-Service ssh-agent | Set-Service -StartupType Automatic
+Start-Service ssh-agent
+
+# Добавляем ключ в agent
+ssh-add $env:USERPROFILE\.ssh\id_ed25519
+
+# Копируем публичный ключ в буфер обмена
+Get-Content $env:USERPROFILE\.ssh\id_ed25519.pub | Set-Clipboard
+
+После этого иди на GitHub → Settings → SSH and GPG keys → New SSH key, вставь ключ из буфера и сохрани.
+
+4. Git remote + push:
+
+# Сначала создай пустой репозиторий на GitHub:
+# https://github.com/new → имя: scamsence-mvp → НЕ добавляй README/gitignore → Create
+
+# Потом в PowerShell:
+cd "C:\Users\Acer\Documents\Claude\Projects\ScamSence_MVP"
+
+# Проверь что git работает
+git status
+
+# Добавь remote
+git remote add origin git@github.com:timatima100500-cmd/scamsence-mvp.git
+
+# Push
+git push -u origin main
+
+Если git status покажет ошибки (из-за тех lock файлов) — напиши, починим. Выполняй шаг за шагом, пиши что получилось.Created 2 memories, created a fileCreated 2 memories, created a fileВсё запомнил. Выполняй команды по порядку — сначала SSH ключ, потом GitHub remote. Пиши что получилось на каждом шаге.
+Когда будешь готов к Дню 2 — переключи на Sonnet (будем писать логику FastAPI + Pydantic). Opus понадобится только на День 3 когда будем проектировать промпты для анализа скамов.
