@@ -2,15 +2,8 @@ import time
 from abc import ABC, abstractmethod
 
 from backend.models.schemas import AnalysisRequest, AnalysisResponse, RedFlag, Verdict
-
-_URGENCY = ["immediately", "urgent", "act now", "limited time", "account will be closed",
-            "nemedlenno", "srochno", "sejchas"]
-_TOO_GOOD = ["won", "winner", "free", "guaranteed", "500%", "1000%",
-             "vyigrali", "besplatno", "podarok", "priz"]
-_IMPERSONATION = ["apple", "microsoft", "amazon", "google", "support team",
-                  "bank", "sberbank", "nalogovaya", "policiya"]
-_PAYMENT = ["bitcoin", "crypto", "gift card", "wire transfer", "western union",
-            "bitkoin", "kriptovalyuta", "podarochnaya karta"]
+from core.analyzer import ScamAnalyzer
+from core.models import AnalysisResult, PatternType
 
 
 class BaseLLMRouter(ABC):
@@ -19,64 +12,86 @@ class BaseLLMRouter(ABC):
 
 
 class MockLLMRouter(BaseLLMRouter):
-    MODEL_NAME = "mock-keyword-v1"
+    """
+    Mock router — использует ScamAnalyzer для реального pattern detection,
+    но не вызывает внешний LLM. День 8 заменит на Ollama/Claude.
+    """
+    MODEL_NAME = "mock-analyzer-v2"
+
+    def __init__(self):
+        # ScamAnalyzer переиспользуется между запросами — он stateless
+        self._analyzer = ScamAnalyzer()
 
     def analyze(self, request: AnalysisRequest) -> AnalysisResponse:
         start = time.monotonic()
-        text = request.content.lower()
-        flags: list[RedFlag] = []
-        score = 0
 
-        hits = [w for w in _URGENCY if w in text]
-        if hits:
-            flags.append(RedFlag(pattern="urgency", description=f"Urgency pressure: {', '.join(hits[:3])}", severity=8))
-            score += 35
+        # Запускаем полный анализ паттернов
+        result = self._analyzer.analyze(
+            content=request.content,
+            content_type=request.content_type.value,
+            language=request.language,
+        )
 
-        hits = [w for w in _TOO_GOOD if w in text]
-        if hits:
-            flags.append(RedFlag(pattern="too_good_to_be_true", description=f"Unrealistic promises: {', '.join(hits[:3])}", severity=9))
-            score += 40
+        # Конвертируем внутренние PatternMatch -> API RedFlag
+        red_flags = [
+            RedFlag(
+                pattern=m.pattern_type.value,
+                description=m.description,
+                severity=m.severity,
+            )
+            for m in result.matches
+        ]
 
-        hits = [w for w in _IMPERSONATION if w in text]
-        if hits:
-            flags.append(RedFlag(pattern="impersonation", description=f"Impersonates org: {', '.join(hits[:3])}", severity=9))
-            score += 35
+        verdict, explanation, recommendations = self._build_verdict(
+            result.normalized_score, result
+        )
 
-        hits = [w for w in _PAYMENT if w in text]
-        if hits:
-            flags.append(RedFlag(pattern="payment_red_flag", description=f"Suspicious payment: {', '.join(hits[:3])}", severity=10))
-            score += 30
-
-        prob = min(score, 100)
-        verdict, explanation, recommendations = self._verdict(prob)
         ms = int((time.monotonic() - start) * 1000)
 
         return AnalysisResponse(
-            verdict=verdict, probability=prob, red_flags=flags,
-            explanation=explanation, recommendations=recommendations,
-            model_used=self.MODEL_NAME, analysis_time_ms=ms,
+            verdict=verdict,
+            probability=result.normalized_score,
+            red_flags=red_flags,
+            explanation=explanation,
+            recommendations=recommendations,
+            model_used=self.MODEL_NAME,
+            analysis_time_ms=ms,
         )
 
     @staticmethod
-    def _verdict(prob: int) -> tuple:
-        if prob >= 70:
+    def _build_verdict(score: int, result: AnalysisResult) -> tuple:
+        detected = {m.pattern_type for m in result.matches}
+
+        if score >= 70:
+            recs = ["Do not click any links in this message.",
+                    "Do not share personal data or send money.",
+                    "Block and report the sender."]
+            if PatternType.payment_red_flag in detected:
+                recs.append("If you already sent money, contact your bank immediately.")
+            if PatternType.data_harvesting in detected:
+                recs.append("If you shared credentials, change your passwords now.")
             return (Verdict.scam,
-                    "High probability of fraud. Multiple classic scam signs detected.",
-                    ["Do not click any links.", "Do not share personal data or money.",
-                     "Block the sender and report it.", "If you sent money, contact your bank immediately."])
-        elif prob >= 45:
+                    f"High fraud probability. Detected {len(result.matches)} red flag(s) "
+                    f"across {len(detected)} pattern category(ies).",
+                    recs)
+
+        elif score >= 45:
             return (Verdict.likely_scam,
-                    "Several signs point to fraud. Verify the source before acting.",
-                    ["Check the sender via the official website.", "Do not rush - scammers create false urgency.",
-                     "Call the official number to confirm."])
-        elif prob >= 20:
+                    "Multiple suspicious signals found. Verify the sender before taking any action.",
+                    ["Check the sender via the official website or phone number.",
+                     "Do not act under time pressure — scammers create false urgency.",
+                     "Call the organization directly using a number from their official site."])
+
+        elif score >= 20:
             return (Verdict.suspicious,
-                    "Some suspicious signs found. Confirm authenticity before acting.",
-                    ["Contact the sender through a different channel.", "Do not click unfamiliar links."])
+                    "Some suspicious elements detected. Proceed with caution.",
+                    ["Verify the sender through a different channel.",
+                     "Do not click unfamiliar links."])
+
         else:
             return (Verdict.legitimate,
-                    "No obvious fraud signs detected. Message appears legitimate.",
-                    ["Stay vigilant - even legitimate channels can be compromised."])
+                    "No significant fraud indicators found. Message appears legitimate.",
+                    ["Stay vigilant — even trusted channels can be compromised."])
 
 
 def get_router() -> BaseLLMRouter:
