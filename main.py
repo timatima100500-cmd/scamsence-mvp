@@ -15,6 +15,8 @@ st.set_page_config(
 
 from frontend.pages.text_check import render as render_text_check
 from frontend.pages.home import render as render_home
+from frontend.pages.email_check import render as render_email_check
+from frontend.pages.url_check import render as render_url_check
 
 
 def apply_theme() -> None:
@@ -168,7 +170,7 @@ def render_sidebar() -> str:
                 )
 
         st.markdown("---")
-        st.caption("ScamSence MVP v0.1 · Days 1–5 ✅")
+        st.caption("ScamSence MVP v0.1 · Days 1–6 ✅")
         st.caption("API: http://127.0.0.1:8000/docs")
 
     return page
@@ -183,11 +185,9 @@ def main() -> None:
     elif page == "💬 Text Check":
         render_text_check()
     elif page == "📧 Email Check":
-        st.info("📧 **Email Check** coming in Day 6! For now, paste email text in Text Check.")
-        render_text_check()
+        render_email_check()
     elif page == "🔗 URL Check":
-        st.info("🔗 **URL Check** coming in Day 6! For now, paste URL text in Text Check.")
-        render_text_check()
+        render_url_check()
 
 
 main()
