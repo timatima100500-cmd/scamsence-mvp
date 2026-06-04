@@ -181,15 +181,15 @@ def render() -> None:
         # Audio upload (Pro feature — UI only until Day 9)
         st.markdown("---")
         st.markdown(
-            '<div style="background:rgba(88,101,242,0.08);border:1px solid rgba(88,101,242,0.25);'
+            '<div style="background:rgba(0,148,212,0.07);border:1px solid rgba(0,148,212,0.22);'
             'border-radius:10px;padding:14px;">'
-            '<div style="font-size:0.75rem;font-weight:700;color:#a5b4fc;text-transform:uppercase;'
+            '<div style="font-size:0.75rem;font-weight:700;color:#00b8f0;text-transform:uppercase;'
             'letter-spacing:0.08em;margin-bottom:8px;">&#127908; Voice Analysis</div>'
             '<div style="font-size:0.8rem;color:#8892aa;margin-bottom:10px;">'
             'Upload audio: MP3, WAV, M4A<br>'
             '<em>AI detects voice cloning, fake urgency, unnatural patterns.</em>'
             '</div>'
-            '<div style="display:inline-block;background:linear-gradient(135deg,#5865f2,#4752c4);'
+            '<div style="display:inline-block;background:linear-gradient(135deg,#0094d4,#005f8a);'
             'color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:100px;">'
             '&#11088; PRO / PREMIUM</div>'
             '</div>',
