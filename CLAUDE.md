@@ -163,10 +163,12 @@ if has_urgency_words(text):
 - [ ] Роутинг: простые → локальная, сложные → Claude
 
 ### День 9: Voice + YouTube Module (Pro)
-- [ ] Whisper интеграция для аудиофайлов
-- [ ] Транскрипция аудио → текст → ScamAnalyzer
-- [ ] YouTube transcript extraction (без yt-dlp!)
-- [ ] Анализ голосовых паттернов
+- [x] Whisper интеграция для аудиофайлов (AudioTranscriber, lazy load)
+- [x] Транскрипция аудио → текст → ScamAnalyzer (voice_analyzer.py)
+- [x] YouTube transcript extraction через youtube-transcript-api (без yt-dlp!)
+- [x] POST /api/v1/analyze/youtube + POST /api/v1/analyze/audio
+- [x] GET /api/v1/voice/status — проверка доступности модулей
+- [x] frontend/pages/voice_check.py — два таба: YouTube + Audio (Pro)
 
 ### День 10: Testing
 - [ ] Unit тесты для analyzer

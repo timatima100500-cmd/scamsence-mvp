@@ -19,6 +19,7 @@ from frontend.pages.home import render as render_home
 from frontend.pages.analyzer import render as render_analyzer
 from frontend.pages.email_check import render as render_email
 from frontend.pages.url_check import render as render_url
+from frontend.pages.voice_check import render as render_voice
 
 # ── Global Design System CSS ─────────────────────────────────────────────────
 # Killer-style: deep dark, cyan-blue accent, high contrast
@@ -250,7 +251,7 @@ def _sidebar() -> str:
         st.markdown('<div style="height:1px;background:rgba(255,255,255,0.06);margin:0 -1rem 16px;"></div>', unsafe_allow_html=True)
 
         # Nav
-        nav_options = ["🏠 Home", "🔍 Analyzer", "📧 Email Check", "🔗 URL Check"]
+        nav_options = ["🏠 Home", "🔍 Analyzer", "📧 Email Check", "🔗 URL Check", "🎙️ Voice & Video"]
 
         # Handle CTA nav redirects from landing page
         default_idx = 0
@@ -317,6 +318,8 @@ def main():
         render_email()
     elif page == "🔗 URL Check":
         render_url()
+    elif page == "🎙️ Voice & Video":
+        render_voice()
 
 
 main()

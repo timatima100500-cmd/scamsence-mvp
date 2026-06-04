@@ -20,9 +20,15 @@ sentence-transformers==3.0.0  # Эмбеддинги (бесплатные, ло
 # --- Database ---
 aiosqlite==0.20.0         # Async SQLite (rate limiter, история)
 
+# --- Scam Data Collection ---
+feedparser==6.0.11        # RSS парсер (FTC, BBB новости)
+praw==7.7.1               # Reddit API (опционально; работает и без него)
+
 # --- Voice Analysis (Pro) ---
-# openai-whisper==20231117  # Раскомментировать для голосового модуля
-# torch>=2.0               # PyTorch для Whisper
+youtube-transcript-api==0.6.2  # YouTube транскрипты (без скачивания аудио)
+python-multipart==0.0.9        # FastAPI file upload (UploadFile)
+# openai-whisper==20231117  # Раскомментировать для аудио-транскрипции
+# torch>=2.0               # PyTorch для Whisper (~2 ГБ)
 
 # --- Утилиты ---
 python-dotenv==1.0.1      # Загрузка .env файлов
