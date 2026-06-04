@@ -295,9 +295,9 @@ def _sidebar() -> str:
 
         # Footer
         st.markdown(
-            '<div style="position:absolute;bottom:20px;left:0;right:0;padding:0 1rem;">'
-            '<div style="font-size:0.68rem;color:#2d3a52;">ScamSence MVP · Days 1–7 ✅</div>'
-            '<div style="font-size:0.68rem;color:#2d3a52;margin-top:2px;">API: localhost:8000</div>'
+            '<div style="margin-top:24px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.05);">'
+            '<div style="font-size:0.65rem;color:#253040;">ScamSence MVP · Days 1–8 ✅</div>'
+            '<div style="font-size:0.65rem;color:#253040;margin-top:2px;">API: localhost:8000</div>'
             '</div>',
             unsafe_allow_html=True,
         )

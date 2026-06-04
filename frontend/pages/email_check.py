@@ -13,19 +13,19 @@ from frontend.components.result_card import render_result_card
 API_URL = "http://127.0.0.1:8000/api/v1/analyze"
 
 _EXAMPLES = {
-    "Sberbank - account blocked": {
+    "🏦 Bank phishing (Sberbank)": {
         "sender": "security@sberbank-support-alert.ru",
-        "subject": "СРОЧНО: Ваш аккаунт заблокирован",
+        "subject": "URGENT: Your account has been blocked",
         "body": (
-            "Уважаемый клиент!\n\n"
-            "Ваш аккаунт Сбербанк Онлайн заблокирован из-за подозрительной активности.\n\n"
-            "Для восстановления доступа СРОЧНО перейдите: http://sberbank-secure-login.xyz/verify\n\n"
-            "Если не сделаете этого в течение 24 часов — аккаунт заблокируют навсегда.\n\n"
-            "С уважением,\nСлужба безопасности Сбербанк"
+            "Dear Customer,\n\n"
+            "Your Sberbank Online account has been blocked due to suspicious activity.\n\n"
+            "To restore access, URGENTLY follow this link: http://sberbank-secure-login.xyz/verify\n\n"
+            "If you do not do this within 24 hours, your account will be permanently blocked.\n\n"
+            "Sincerely,\nSberbank Security Service"
         ),
         "headers": "From: security@sberbank-support-alert.ru\nReply-To: noreply@gmail.com",
     },
-    "Apple iPhone prize lottery": {
+    "🎰 Apple prize lottery": {
         "sender": "winners@apple-promo-giveaway.com",
         "subject": "Congratulations! You won Apple iPhone 15 Pro — Claim Now!",
         "body": (
@@ -37,7 +37,7 @@ _EXAMPLES = {
         ),
         "headers": "",
     },
-    "Microsoft tech support scam": {
+    "👨‍💻 Microsoft tech support scam": {
         "sender": "support@microsoft-helpdesk-team.info",
         "subject": "Critical: Your Windows License Has Expired",
         "body": (
@@ -50,34 +50,34 @@ _EXAMPLES = {
         ),
         "headers": "X-Originating-IP: 185.234.219.45",
     },
-    "Crypto investment guaranteed 300%": {
+    "🐷 Crypto investment 300% guaranteed": {
         "sender": "invest@crypto-profit-guarantee.io",
-        "subject": "Эксклюзивное: 300% прибыли за 30 дней",
+        "subject": "Exclusive: 300% profit in 30 days — guaranteed",
         "body": (
-            "Привет!\n\n"
-            "Наша команда зарабатывает 300% в месяц на крипто-рынке.\n"
-            "Открываем доступ для 10 новых инвесторов.\n"
-            "Минимум $500 BTC/USDT. Выплата через 30 дней: $1500 гарантировано!\n\n"
-            "Telegram: @crypto_guru_pro\n\nАлексей Волков, Senior Analyst"
+            "Hi!\n\n"
+            "Our team earns 300% per month on the crypto market.\n"
+            "We are opening access for 10 new investors.\n"
+            "Minimum $500 BTC/USDT. Payout in 30 days: $1500 guaranteed!\n\n"
+            "Telegram: @crypto_guru_pro\n\nAlex Volkov, Senior Analyst"
         ),
         "headers": "",
     },
 }
 
 _RED_FLAGS = [
-    ("📧 Домен отправителя", "sberbank-support-alert.ru вместо sberbank.ru"),
-    ("↩️ Reply-To подмена", "Reply-To ведёт на другой адрес чем From"),
-    ("⏰ Срочность", "«24 часа», «немедленно», «сейчас»"),
-    ("🔗 Подозрительный URL", "Домен не совпадает с заявленной организацией"),
-    ("🎁 Слишком хорошо", "Выигрыши, призы, гарантированная прибыль"),
-    ("📞 Требование звонка", "Просят звонить на левый номер"),
+    ("📧 Sender domain", "sberbank-support-alert.ru instead of sberbank.ru"),
+    ("↩️ Reply-To spoofing", "Reply-To points to a different address than From"),
+    ("⏰ Urgency pressure", "\"24 hours\", \"immediately\", \"act now\""),
+    ("🔗 Suspicious URL", "Domain doesn't match the claimed organization"),
+    ("🎁 Too good to be true", "Prizes, winnings, guaranteed returns"),
+    ("📞 Fake phone number", "Asking you to call an unofficial number"),
 ]
 
 
 def _build_email_text(sender: str, subject: str, body: str, headers: str) -> str:
     """
-    Собирает полный email-текст для анализатора.
-    Структурируем явно чтобы модель правильно классифицировала контекст.
+    Assembles full email text for the analyzer.
+    Structured explicitly so the model correctly classifies context.
     """
     parts = []
     if headers.strip():
@@ -92,19 +92,22 @@ def _build_email_text(sender: str, subject: str, body: str, headers: str) -> str
 
 
 def _call_api(content: str) -> dict | None:
-    """Отправляет email-текст в API, возвращает результат или None."""
+    """Sends email text to API, returns result dict or None on error."""
     try:
-        resp = requests.post(API_URL, json={"content": content, "content_type": "email"}, timeout=30)
+        resp = requests.post(API_URL, json={"content": content, "content_type": "email"}, timeout=120)
         resp.raise_for_status()
         return resp.json()
     except requests.exceptions.ConnectionError:
-        st.error("❌ API недоступен. Запусти: `uvicorn backend.app:app --reload`")
+        st.error("❌ API offline. Start it: `uvicorn backend.app:app --reload`")
     except requests.exceptions.Timeout:
-        st.error("⏱️ API не ответил за 30 секунд.")
+        st.error("⏱️ API did not respond in 120 seconds.")
     except requests.exceptions.HTTPError as e:
-        st.error(f"❌ HTTP {e}")
+        if e.response is not None and e.response.status_code == 429:
+            st.error("🚫 Daily limit reached. Resets at midnight UTC.")
+        else:
+            st.error(f"❌ HTTP error: {e}")
     except json.JSONDecodeError:
-        st.error("❌ Некорректный ответ от API.")
+        st.error("❌ Invalid response from API.")
     return None
 
 
@@ -112,79 +115,101 @@ def render() -> None:
     """Renders the Email Check page."""
     st.markdown("## 📧 Email Check")
     st.markdown(
-        "Вставь содержимое подозрительного письма — анализируем отправителя, "
-        "тему, ссылки и паттерны давления."
+        "Paste the contents of a suspicious email — we analyze the sender, "
+        "subject, links, and pressure patterns."
     )
     st.markdown("---")
 
-    # Example loader
-    col_ex, col_load = st.columns([3, 1])
-    with col_ex:
-        example_key = st.selectbox(
-            "Загрузить пример",
-            options=["— выбери пример —"] + list(_EXAMPLES.keys()),
-            key="email_example_select",
-        )
-    with col_load:
-        st.markdown("<br>", unsafe_allow_html=True)
-        load_clicked = st.button("Загрузить", key="load_email_example", use_container_width=True)
+    # Example selector (Load button is at the bottom row)
+    example_key = st.selectbox(
+        "Load an example",
+        options=["— choose example —"] + list(_EXAMPLES.keys()),
+        key="email_example_select",
+    )
 
     # Init session state fields
     for k, v in [("es_sender", ""), ("es_subject", ""), ("es_body", ""), ("es_headers", "")]:
         if k not in st.session_state:
             st.session_state[k] = v
 
-    if load_clicked and example_key != "— выбери пример —":
-        ex = _EXAMPLES[example_key]
-        st.session_state.es_sender = ex["sender"]
-        st.session_state.es_subject = ex["subject"]
-        st.session_state.es_body = ex["body"]
-        st.session_state.es_headers = ex["headers"]
-        st.rerun()
-
     st.markdown("---")
 
     col_meta, col_body_col = st.columns([1, 1.6])
 
     with col_meta:
-        st.markdown("#### Метаданные письма")
-        sender = st.text_input("📤 От кого (From)", value=st.session_state.es_sender,
-                               placeholder="security@bank-alert.xyz", key="es_sender_input")
-        subject = st.text_input("📌 Тема (Subject)", value=st.session_state.es_subject,
-                                placeholder="СРОЧНО: Ваш аккаунт заблокирован", key="es_subject_input")
+        st.markdown("#### Email metadata")
+        sender = st.text_input(
+            "📤 From (sender)",
+            value=st.session_state.es_sender,
+            placeholder="security@bank-alert.xyz",
+            key="es_sender_input",
+        )
+        subject = st.text_input(
+            "📌 Subject",
+            value=st.session_state.es_subject,
+            placeholder="URGENT: Your account has been suspended",
+            key="es_subject_input",
+        )
 
-        with st.expander("⚙️ Технические заголовки (опционально)"):
+        with st.expander("⚙️ Technical headers (optional)"):
             headers_val = st.text_area(
-                "Raw headers", value=st.session_state.es_headers, height=100,
+                "Raw headers",
+                value=st.session_state.es_headers,
+                height=100,
                 placeholder="From: ...\nReply-To: ...\nX-Originating-IP: ...",
                 key="es_headers_input",
-                help="Скопируй из «Показать оригинал» в почтовом клиенте",
+                help="Copy from 'Show original' in your email client",
             )
 
-        with st.expander("🔴 На что обращать внимание"):
+        with st.expander("🔴 What to look for"):
             for flag, example in _RED_FLAGS:
                 st.markdown(f"**{flag}** — *{example}*")
 
     with col_body_col:
-        st.markdown("#### Текст письма")
+        st.markdown("#### Email body")
         body = st.text_area(
-            "Тело письма", value=st.session_state.es_body, height=340,
-            placeholder="Вставь полный текст письма...",
-            key="es_body_input", label_visibility="collapsed",
+            "Email body",
+            value=st.session_state.es_body,
+            height=340,
+            placeholder="Paste the full email text here...",
+            key="es_body_input",
+            label_visibility="collapsed",
         )
 
     st.markdown("---")
-    col_l, col_c, col_r = st.columns([2, 1.5, 2])
-    with col_c:
-        analyze = st.button("🔍 Проверить Email", type="primary",
-                            use_container_width=True, key="analyze_email_btn")
+    col_pad_l, col_load_btn, col_gap, col_analyze_btn, col_pad_r = st.columns([1, 1.4, 0.2, 1.4, 1])
+    with col_load_btn:
+        load_email_bottom = st.button(
+            "⬆ Load Example",
+            key="load_email_bottom",
+            use_container_width=True,
+        )
+    with col_analyze_btn:
+        analyze = st.button(
+            "🔍 Check Email",
+            type="primary",
+            use_container_width=True,
+            key="analyze_email_btn",
+        )
+
+    # Handle bottom Load click
+    if load_email_bottom:
+        if example_key != "— choose example —":
+            ex = _EXAMPLES[example_key]
+            st.session_state.es_sender = ex["sender"]
+            st.session_state.es_subject = ex["subject"]
+            st.session_state.es_body = ex["body"]
+            st.session_state.es_headers = ex["headers"]
+            st.rerun()
+        else:
+            st.info("👆 Select an example from the dropdown above first.")
 
     if analyze:
         full_text = _build_email_text(sender, subject, body, headers_val)
         if len(full_text.strip()) < 20:
-            st.warning("⚠️ Введи хотя бы адрес отправителя и тему письма.")
+            st.warning("⚠️ Enter at least a sender address and subject line.")
         else:
-            with st.spinner("Анализируем email..."):
+            with st.spinner("Analyzing email..."):
                 result = _call_api(full_text)
             if result:
                 if "history" not in st.session_state:
@@ -200,11 +225,11 @@ def render() -> None:
                 verdict = result.get("verdict", "")
                 if verdict in ("Scam", "Likely Scam"):
                     st.error(
-                        "📧 **Email-совет:** Не переходи по ссылкам. "
-                        "Свяжись с организацией напрямую через официальный сайт. Пометь как спам."
+                        "📧 **Action required:** Do NOT click any links. "
+                        "Contact the organization directly via their official website. Mark as spam."
                     )
                 elif verdict == "Suspicious":
                     st.warning(
-                        "📧 **Email-совет:** Проверь домен отправителя вручную. "
-                        "Не отвечай и не кликай ссылки до выяснения."
+                        "📧 **Caution:** Verify the sender domain manually. "
+                        "Do not reply or click any links until confirmed safe."
                     )
