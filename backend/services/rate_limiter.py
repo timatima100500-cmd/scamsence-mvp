@@ -12,7 +12,7 @@ from pathlib import Path
 
 # SQLite хранится рядом с проектом, не в venv
 _DB_PATH = Path(__file__).parent.parent.parent / "data" / "rate_limits.db"
-_FREE_LIMIT = 5   # проверок в день для бесплатного плана
+_FREE_LIMIT = 100  # dev: 100/day; снизить до 5-10 перед продакшеном
 _WINDOW_SEC = 86400  # 24 часа в секундах
 
 

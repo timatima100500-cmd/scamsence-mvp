@@ -77,16 +77,19 @@ def _call_api(content: str, content_type: str) -> dict | None:
         resp = requests.post(
             API_URL,
             json={"content": content, "content_type": content_type},
-            timeout=30,
+            timeout=120,
         )
         resp.raise_for_status()
         return resp.json()
     except requests.exceptions.ConnectionError:
         st.error("❌ API offline. Start it: `uvicorn backend.app:app --reload`")
     except requests.exceptions.Timeout:
-        st.error("⏱️ API did not respond in 30 seconds.")
+        st.error("⏱️ No response in 120 seconds. If using Ollama, the model may still be loading — try again in 30 seconds.")
     except requests.exceptions.HTTPError as e:
-        st.error(f"❌ HTTP error: {e}")
+        if e.response is not None and e.response.status_code == 429:
+            st.error("🚫 Daily check limit reached. Resets at midnight UTC.")
+        else:
+            st.error(f"❌ HTTP error: {e}")
     except json.JSONDecodeError:
         st.error("❌ Invalid response from API.")
     return None
@@ -104,19 +107,32 @@ def _verdict_color(verdict: str) -> str:
 def render() -> None:
     """Renders the unified Analyzer page."""
 
+    # ── Button styles — larger, centered ─────────────────────────────────────
+    st.markdown("""
+<style>
+/* Make Analyze button wider and taller */
+[data-testid="stButton"][key="az_analyze_btn"] > button,
+div[data-testid="column"]:has(button[kind="primary"]) button {
+  height: 3rem !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
     # Page header
     st.markdown(
-        "<h2 style='color:#fff;margin-bottom:4px;'>&#128269; ScamSence Analyzer</h2>",
+        "<h2 style='color:#e8f0ff;margin-bottom:4px;'>&#128269; ScamSence Analyzer</h2>",
         unsafe_allow_html=True,
     )
     st.markdown(
-        "<p style='color:#8892aa;margin-bottom:0;'>Paste any suspicious content — get an AI verdict in seconds.</p>",
+        "<p style='color:#7a8fa8;margin-bottom:0;'>Paste any suspicious content — get an AI verdict in seconds.</p>",
         unsafe_allow_html=True,
     )
     st.markdown("---")
 
-    # ── Top row: content type + example loader ────────────────────────────────
-    col_type, col_ex, col_load = st.columns([1.5, 2.5, 0.8])
+    # ── Top row: content type + example selector (no Load button here) ────────
+    col_type, col_ex = st.columns([1.5, 3.5])
 
     with col_type:
         content_type_label = st.selectbox(
@@ -132,21 +148,11 @@ def render() -> None:
             key="az_example_select",
         )
 
-    with col_load:
-        st.markdown("<br>", unsafe_allow_html=True)
-        load_clicked = st.button("Load", key="az_load_btn", use_container_width=True)
-
     # Init session state
     if "az_text" not in st.session_state:
         st.session_state.az_text = ""
     if "az_type" not in st.session_state:
         st.session_state.az_type = "Auto-detect"
-
-    if load_clicked and example_key != "— choose example —":
-        ex_type, ex_text = EXAMPLES[example_key]
-        st.session_state.az_text = ex_text
-        st.session_state.az_type = ex_type
-        st.rerun()
 
     st.markdown("---")
 
@@ -181,15 +187,15 @@ def render() -> None:
         # Audio upload (Pro feature — UI only until Day 9)
         st.markdown("---")
         st.markdown(
-            '<div style="background:rgba(88,101,242,0.08);border:1px solid rgba(88,101,242,0.25);'
+            '<div style="background:rgba(0,148,212,0.07);border:1px solid rgba(0,148,212,0.22);'
             'border-radius:10px;padding:14px;">'
-            '<div style="font-size:0.75rem;font-weight:700;color:#a5b4fc;text-transform:uppercase;'
+            '<div style="font-size:0.75rem;font-weight:700;color:#00b8f0;text-transform:uppercase;'
             'letter-spacing:0.08em;margin-bottom:8px;">&#127908; Voice Analysis</div>'
-            '<div style="font-size:0.8rem;color:#8892aa;margin-bottom:10px;">'
+            '<div style="font-size:0.8rem;color:#7a8fa8;margin-bottom:10px;">'
             'Upload audio: MP3, WAV, M4A<br>'
             '<em>AI detects voice cloning, fake urgency, unnatural patterns.</em>'
             '</div>'
-            '<div style="display:inline-block;background:linear-gradient(135deg,#5865f2,#4752c4);'
+            '<div style="display:inline-block;background:linear-gradient(135deg,#0094d4,#005f8a);'
             'color:#fff;font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:100px;">'
             '&#11088; PRO / PREMIUM</div>'
             '</div>',
@@ -203,24 +209,44 @@ def render() -> None:
             help="Voice analysis coming in Premium plan",
         )
 
-    # ── Char count + analyze button ───────────────────────────────────────────
+    # ── Char count ────────────────────────────────────────────────────────────
     char_count = len(text_input) if text_input else 0
-    col_info, col_btn = st.columns([3, 1])
-    with col_info:
-        color = "#10b981" if char_count > 20 else "#5a6380"
-        st.markdown(
-            f'<p style="color:{color};font-size:0.8rem;margin:4px 0;">'
-            f'{char_count} characters {" ✓ ready to analyze" if char_count > 20 else " — paste content above"}'
-            f'</p>',
-            unsafe_allow_html=True,
+    color = "#22c55e" if char_count > 20 else "#3a4a5c"
+    st.markdown(
+        f'<p style="color:{color};font-size:0.8rem;margin:4px 0 12px;">'
+        f'{char_count} characters'
+        f'{" ✓ ready to analyze" if char_count > 20 else " — paste content above"}'
+        f'</p>',
+        unsafe_allow_html=True,
+    )
+
+    # ── Buttons: [Load ←] centered [→ Analyze] ────────────────────────────────
+    # 5 columns: padding | Load | gap | Analyze | padding
+    col_pad_l, col_load_btn, col_gap, col_analyze_btn, col_pad_r = st.columns([1, 1.4, 0.2, 1.4, 1])
+
+    with col_load_btn:
+        load_clicked = st.button(
+            "⬆ Load Example",
+            key="az_load_btn",
+            use_container_width=True,
         )
-    with col_btn:
+
+    with col_analyze_btn:
         analyze = st.button(
             "&#128269; Analyze",
             type="primary",
             use_container_width=True,
             key="az_analyze_btn",
         )
+
+    # Handle Load click
+    if load_clicked and example_key != "— choose example —":
+        ex_type, ex_text = EXAMPLES[example_key]
+        st.session_state.az_text = ex_text
+        st.session_state.az_type = ex_type
+        st.rerun()
+    elif load_clicked and example_key == "— choose example —":
+        st.info("👆 Select an example from the dropdown above first.")
 
     # ── Analysis ──────────────────────────────────────────────────────────────
     if analyze:
@@ -233,42 +259,23 @@ def render() -> None:
                 result = _call_api(content, api_type)
 
             if result:
-                # Save to history
+                # Save to history (use correct field name: probability)
                 if "history" not in st.session_state:
                     st.session_state.history = []
                 st.session_state.history.insert(0, {
                     "text": content[:60],
                     "verdict": result.get("verdict", "Unknown"),
-                    "probability": result.get("scam_probability", 0),
+                    "probability": result.get("probability", 0),
                     "content_type": api_type,
                 })
 
                 st.markdown("---")
 
-                # Verdict banner
-                verdict = result.get("verdict", "Unknown")
-                prob = result.get("scam_probability", 0)
-                vc = _verdict_color(verdict)
-
-                st.markdown(
-                    f'<div style="background:rgba(255,255,255,0.03);border:1px solid {vc}40;'
-                    f'border-left:4px solid {vc};border-radius:12px;padding:20px 24px;margin-bottom:20px;">'
-                    f'<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">'
-                    f'<div><div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;'
-                    f'text-transform:uppercase;color:#5a6380;">VERDICT</div>'
-                    f'<div style="font-size:1.8rem;font-weight:900;color:{vc};">{verdict}</div></div>'
-                    f'<div style="width:1px;height:48px;background:#1c2040;"></div>'
-                    f'<div><div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;'
-                    f'text-transform:uppercase;color:#5a6380;">SCAM PROBABILITY</div>'
-                    f'<div style="font-size:1.8rem;font-weight:900;color:{vc};">{prob}%</div></div>'
-                    f'</div></div>',
-                    unsafe_allow_html=True,
-                )
-
-                # Full result card
+                # result_card shows verdict + probability — no duplicate banner needed
                 render_result_card(result)
 
                 # Type-specific advice
+                verdict = result.get("verdict", "Unknown")
                 if verdict in ("Scam", "Likely Scam"):
                     advice = {
                         "email": "Do NOT click any links. Contact the organization directly via their official website. Mark as spam.",

@@ -19,12 +19,12 @@ _CSS = """<style>
 .hero-wrap {
   position: relative; overflow: hidden;
   padding: 100px 24px 80px; text-align: center;
-  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.14) 0%, transparent 70%);
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,148,212,0.12) 0%, transparent 70%);
   border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .hero-glow-l {
   position: absolute; width: 500px; height: 500px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0,148,212,0.10) 0%, transparent 70%);
   top: -200px; left: -150px; pointer-events: none;
 }
 .hero-glow-r {
@@ -34,8 +34,8 @@ _CSS = """<style>
 }
 .hero-badge {
   display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2);
-  color: #818cf8; font-size: 0.72rem; font-weight: 600;
+  background: rgba(0,148,212,0.08); border: 1px solid rgba(0,148,212,0.25);
+  color: #00b8f0; font-size: 0.72rem; font-weight: 600;
   padding: 5px 14px; border-radius: 100px; letter-spacing: 0.06em;
   text-transform: uppercase; margin-bottom: 28px;
 }
@@ -54,15 +54,14 @@ _CSS = """<style>
 .hero-h {
   font-size: clamp(2.6rem, 5.5vw, 4rem); font-weight: 900;
   line-height: 1.05; letter-spacing: -0.04em;
-  color: #f0f4ff !important; margin: 0 0 20px;
+  color: #e8f0ff !important; margin: 0 0 20px;
   max-width: 820px; margin-left: auto; margin-right: auto;
 }
 .hero-grad {
-  background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  color: #00b8f0 !important;
 }
 .hero-sub {
-  font-size: 1.1rem; line-height: 1.8; color: #8b9ab2 !important;
+  font-size: 1.1rem; line-height: 1.8; color: #7a8fa8 !important;
   max-width: 540px; margin: 0 auto 40px;
 }
 .hero-trust {
@@ -70,31 +69,31 @@ _CSS = """<style>
   padding-top: 32px; margin-top: 32px; border-top: 1px solid rgba(255,255,255,0.06);
 }
 .ht-item { text-align: center; }
-.ht-n { font-size: 1.5rem; font-weight: 800; color: #f0f4ff !important; }
-.ht-l { font-size: 0.7rem; color: #4a5872 !important; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+.ht-n { font-size: 1.5rem; font-weight: 800; color: #e8f0ff !important; }
+.ht-l { font-size: 0.7rem; color: #3a4a5c !important; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
 
 /* ── Social proof ── */
 .sp-bar {
   display: flex; align-items: center; justify-content: center;
   gap: 12px; padding: 14px 24px; flex-wrap: wrap;
-  background: rgba(99,102,241,0.04); border-bottom: 1px solid rgba(99,102,241,0.1);
+  background: rgba(0,148,212,0.04); border-bottom: 1px solid rgba(0,148,212,0.12);
 }
 .sp-avatars { display: flex; }
 .sp-av {
   width: 26px; height: 26px; border-radius: 50%;
-  border: 2px solid #080b14; margin-left: -8px;
+  border: 2px solid #07090e; margin-left: -8px;
   font-size: 0.6rem; font-weight: 700; color: #fff !important;
   display: flex; align-items: center; justify-content: center;
 }
 .sp-av:first-child { margin-left: 0; }
-.sp-text { font-size: 0.82rem; color: #8b9ab2 !important; }
-.sp-text b { color: #f0f4ff !important; }
+.sp-text { font-size: 0.82rem; color: #7a8fa8 !important; }
+.sp-text b { color: #e8f0ff !important; }
 
 /* ── Section ── */
 .sec { padding: 80px 24px; max-width: 1100px; margin: 0 auto; }
-.sec-tag { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #6366f1 !important; margin-bottom: 12px; }
-.sec-h { font-size: 2.1rem; font-weight: 800; color: #f0f4ff !important; letter-spacing: -0.03em; margin: 0 0 12px; }
-.sec-s { font-size: 0.95rem; color: #8b9ab2 !important; line-height: 1.8; margin-bottom: 40px; max-width: 500px; }
+.sec-tag { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #0094d4 !important; margin-bottom: 12px; }
+.sec-h { font-size: 2.1rem; font-weight: 800; color: #e8f0ff !important; letter-spacing: -0.03em; margin: 0 0 12px; }
+.sec-s { font-size: 0.95rem; color: #7a8fa8 !important; line-height: 1.8; margin-bottom: 40px; max-width: 500px; }
 
 /* ── Example cards ── */
 .cards-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
@@ -121,7 +120,7 @@ _CSS = """<style>
 .card-quote {
   font-size: 0.83rem; color: #8b9ab2 !important; font-style: italic;
   line-height: 1.7; margin-bottom: 16px;
-  border-left: 2px solid rgba(255,255,255,0.08); padding-left: 12px;
+  background: oklch(14% 0.007 250); border-radius: 6px; padding: 10px 14px;
 }
 .card-prob { font-size: 2rem; font-weight: 900; line-height: 1; }
 .cp-red { color: #ef4444 !important; }
@@ -147,12 +146,12 @@ _CSS = """<style>
 }
 .step-num {
   width: 34px; height: 34px; border-radius: 9px;
-  background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25);
-  color: #818cf8 !important; font-size: 0.85rem; font-weight: 700;
+  background: rgba(0,148,212,0.10); border: 1px solid rgba(0,148,212,0.28);
+  color: #00b8f0 !important; font-size: 0.85rem; font-weight: 700;
   display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
 }
-.step-t { font-size: 0.9rem; font-weight: 700; color: #f0f4ff !important; margin-bottom: 8px; }
-.step-d { font-size: 0.8rem; color: #8b9ab2 !important; line-height: 1.7; }
+.step-t { font-size: 0.9rem; font-weight: 700; color: #e8f0ff !important; margin-bottom: 8px; }
+.step-d { font-size: 0.8rem; color: #7a8fa8 !important; line-height: 1.7; }
 
 /* ── Pricing ── */
 .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
@@ -161,38 +160,38 @@ _CSS = """<style>
   border-radius: 18px; padding: 28px; position: relative;
 }
 .plan.pop {
-  background: rgba(99,102,241,0.06); border-color: rgba(99,102,241,0.3);
-  box-shadow: 0 0 40px rgba(99,102,241,0.08);
+  background: rgba(0,148,212,0.05); border-color: rgba(0,148,212,0.35);
+  box-shadow: 0 0 40px rgba(0,148,212,0.08);
 }
 .pop-pill {
   position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #0094d4, #005f8a);
   color: #fff !important; font-size: 0.65rem; font-weight: 700;
   padding: 3px 14px; border-radius: 100px; white-space: nowrap; letter-spacing: 0.06em;
 }
-.plan-tier { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #4a5872 !important; margin-bottom: 8px; }
-.plan-tier.pro { color: #818cf8 !important; }
+.plan-tier { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #3a4a5c !important; margin-bottom: 8px; }
+.plan-tier.pro { color: #00b8f0 !important; }
 .plan-tier.prem { color: #f59e0b !important; }
-.plan-price { font-size: 2.4rem; font-weight: 900; color: #f0f4ff !important; letter-spacing: -0.04em; line-height: 1; }
-.plan-price sub { font-size: 0.85rem; font-weight: 400; color: #4a5872 !important; vertical-align: middle; }
+.plan-price { font-size: 2.4rem; font-weight: 900; color: #e8f0ff !important; letter-spacing: -0.04em; line-height: 1; }
+.plan-price sub { font-size: 0.85rem; font-weight: 400; color: #3a4a5c !important; vertical-align: middle; }
 .plan-save { font-size: 0.72rem; color: #22c55e !important; margin: 4px 0; min-height: 1.2rem; }
-.plan-desc { font-size: 0.8rem; color: #4a5872 !important; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; }
+.plan-desc { font-size: 0.8rem; color: #3a4a5c !important; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 16px; }
 .plan-feats { list-style: none; padding: 0; margin: 0; }
-.plan-feats li { font-size: 0.82rem; color: #8b9ab2 !important; padding: 5px 0; display: flex; align-items: flex-start; gap: 8px; }
-.pf-ck { color: #6366f1 !important; font-weight: 700; flex-shrink: 0; font-size: 0.85rem; }
-.pf-cx { color: #2d3a52 !important; flex-shrink: 0; font-size: 0.85rem; }
-.pf-dim { color: #2d3a52 !important; }
-.pf-pro { color: #818cf8 !important; font-weight: 500; }
+.plan-feats li { font-size: 0.82rem; color: #7a8fa8 !important; padding: 5px 0; display: flex; align-items: flex-start; gap: 8px; }
+.pf-ck { color: #0094d4 !important; font-weight: 700; flex-shrink: 0; font-size: 0.85rem; }
+.pf-cx { color: #253040 !important; flex-shrink: 0; font-size: 0.85rem; }
+.pf-dim { color: #253040 !important; }
+.pf-pro { color: #00b8f0 !important; font-weight: 500; }
 .pf-prem { color: #f59e0b !important; font-weight: 500; }
 
 /* ── Footer ── */
-.footer-w { background: #06080f; border-top: 1px solid rgba(255,255,255,0.06); padding: 32px 24px; text-align: center; }
+.footer-w { background: #050709; border-top: 1px solid rgba(0,148,212,0.12); padding: 32px 24px; text-align: center; }
 .f-logo { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px; }
-.f-logo span { font-size: 0.95rem; font-weight: 800; color: #f0f4ff !important; }
-.f-sub { font-size: 0.78rem; color: #2d3a52 !important; margin-bottom: 16px; }
+.f-logo span { font-size: 0.95rem; font-weight: 800; color: #e8f0ff !important; }
+.f-sub { font-size: 0.78rem; color: #253040 !important; margin-bottom: 16px; }
 .f-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
-.f-links a { color: #4a5872 !important; font-size: 0.78rem; text-decoration: none; }
-.f-copy { font-size: 0.7rem; color: #1e2a3a !important; }
+.f-links a { color: #3a4a5c !important; font-size: 0.78rem; text-decoration: none; }
+.f-copy { font-size: 0.7rem; color: #1a2535 !important; }
 </style>"""
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -202,8 +201,8 @@ _CSS = """<style>
 _SOCIAL_PROOF = (
     '<div class="sp-bar">'
     '<div class="sp-avatars">'
-    '<div class="sp-av" style="background:#6366f1;">JM</div>'
-    '<div class="sp-av" style="background:#8b5cf6;">SR</div>'
+    '<div class="sp-av" style="background:#0094d4;">JM</div>'
+    '<div class="sp-av" style="background:#006fa8;">SR</div>'
     '<div class="sp-av" style="background:#ef4444;">AK</div>'
     '<div class="sp-av" style="background:#f59e0b;">TP</div>'
     '<div class="sp-av" style="background:#22c55e;">DL</div>'
@@ -368,7 +367,7 @@ _PRICING = (
 _FOOTER = (
     '<div class="footer-w">'
     '<div class="f-logo">'
-    '<div style="width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#6366f1,#8b5cf6);'
+    '<div style="width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,#0094d4,#005f8a);'
     'display:flex;align-items:center;justify-content:center;font-size:11px;">&#128737;</div>'
     '<span>ScamSence</span>'
     '</div>'

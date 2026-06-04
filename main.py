@@ -21,23 +21,23 @@ from frontend.pages.email_check import render as render_email
 from frontend.pages.url_check import render as render_url
 
 # ── Global Design System CSS ─────────────────────────────────────────────────
-# Linear/Arc-inspired: deep dark, subtle glass, purple accent
+# Killer-style: deep dark, cyan-blue accent, high contrast
 _DS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap');
 
 :root {
-  --bg0: #080b14;
-  --bg1: #0d1120;
-  --bg2: #121828;
-  --bg3: #1a2236;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(99,102,241,0.2);
-  --text1: #f0f4ff;
-  --text2: #8b9ab2;
-  --text3: #4a5872;
-  --purple: #6366f1;
-  --purple2: #818cf8;
+  --bg0: #07090e;
+  --bg1: #0c0f18;
+  --bg2: #111520;
+  --bg3: #182030;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(0,148,212,0.35);
+  --text1: #e8f0ff;
+  --text2: #7a8fa8;
+  --text3: #3a4a5c;
+  --accent: #0094d4;
+  --accent2: #00b8f0;
   --red: #ef4444;
   --green: #22c55e;
   --amber: #f59e0b;
@@ -87,32 +87,89 @@ hr { border-color: var(--border) !important; border-top-width: 1px; }
 }
 .stTextArea textarea:focus, .stTextInput input:focus {
   border-color: var(--border2) !important;
-  box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important;
+  box-shadow: 0 0 0 3px rgba(0,148,212,0.12) !important;
 }
+
+/* ── Selectbox — trigger (closed state) ── */
 div[data-baseweb="select"] > div {
   background: var(--bg2) !important;
-  border-color: var(--border) !important;
+  border: 1px solid var(--border) !important;
   border-radius: 10px !important;
   color: var(--text1) !important;
 }
-div[data-baseweb="popover"] { background: var(--bg2) !important; }
+div[data-baseweb="select"] > div:hover {
+  border-color: var(--border2) !important;
+}
+/* selected value text */
+div[data-baseweb="select"] [data-testid="stSelectboxVirtualDropdown"] span,
+div[data-baseweb="select"] > div > div > div,
+div[data-baseweb="select"] > div span {
+  color: var(--text1) !important;
+}
+/* dropdown arrow */
+div[data-baseweb="select"] svg { fill: var(--text2) !important; }
+
+/* ── Selectbox — dropdown popup ── */
+div[data-baseweb="popover"],
+div[data-baseweb="popover"] > div,
+div[data-baseweb="popover"] > div > div {
+  background: var(--bg2) !important;
+  border: 1px solid var(--border2) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6) !important;
+}
+/* menu list */
+ul[data-baseweb="menu"],
+[data-baseweb="menu"] {
+  background: var(--bg2) !important;
+  padding: 4px !important;
+}
+/* individual options */
+[role="option"] {
+  background: var(--bg2) !important;
+  border-radius: 6px !important;
+  padding: 8px 12px !important;
+  margin: 1px 0 !important;
+}
+[role="option"]:hover,
+[role="option"][aria-selected="true"] {
+  background: var(--bg3) !important;
+}
+/* option text — all children */
+[role="option"] *,
+[role="option"] span,
+[role="option"] div,
+[role="option"] p,
+[data-baseweb="menu-item"],
+[data-baseweb="menu-item"] * {
+  color: var(--text1) !important;
+  background: transparent !important;
+}
+/* highlighted/active option */
+[role="option"][aria-selected="true"] * {
+  color: var(--accent2) !important;
+}
+/* "no results" placeholder */
+[data-baseweb="popover"] [role="listbox"] div {
+  color: var(--text1) !important;
+}
 
 /* ── Buttons ── */
 .stButton > button[kind="primary"] {
-  background: linear-gradient(135deg, #6366f1, #4f52c9) !important;
+  background: linear-gradient(135deg, #0094d4, #006fa8) !important;
   border: none !important;
   border-radius: 10px !important;
   color: #fff !important;
   font-weight: 600 !important;
   font-size: 0.9rem !important;
   padding: 0.55rem 1.4rem !important;
-  box-shadow: 0 0 24px rgba(99,102,241,0.25), inset 0 1px 0 rgba(255,255,255,0.1) !important;
+  box-shadow: 0 0 24px rgba(0,148,212,0.3), inset 0 1px 0 rgba(255,255,255,0.1) !important;
   transition: all 0.2s !important;
   letter-spacing: -0.01em !important;
 }
 .stButton > button[kind="primary"]:hover {
-  background: linear-gradient(135deg, #7274f3, #6366f1) !important;
-  box-shadow: 0 0 32px rgba(99,102,241,0.4) !important;
+  background: linear-gradient(135deg, #00b8f0, #0094d4) !important;
+  box-shadow: 0 0 32px rgba(0,184,240,0.45) !important;
   transform: translateY(-1px) !important;
 }
 .stButton > button:not([kind="primary"]) {
@@ -124,7 +181,7 @@ div[data-baseweb="popover"] { background: var(--bg2) !important; }
   transition: all 0.2s !important;
 }
 .stButton > button:not([kind="primary"]):hover {
-  border-color: rgba(255,255,255,0.15) !important;
+  border-color: var(--border2) !important;
   color: var(--text1) !important;
 }
 
@@ -139,7 +196,7 @@ div[data-baseweb="popover"] { background: var(--bg2) !important; }
 .stSuccess, .stInfo, .stWarning, .stError { background: var(--bg2) !important; }
 
 /* ── Progress & Metrics ── */
-.stProgress > div > div { background: var(--purple) !important; border-radius: 4px; }
+.stProgress > div > div { background: var(--accent) !important; border-radius: 4px; }
 [data-testid="stMetric"] {
   background: var(--bg2);
   border: 1px solid var(--border);
@@ -152,12 +209,22 @@ div[data-baseweb="popover"] { background: var(--bg2) !important; }
 /* ── File uploader ── */
 [data-testid="stFileUploader"] {
   background: var(--bg2) !important;
-  border: 1px dashed rgba(255,255,255,0.12) !important;
+  border: 1px dashed rgba(0,148,212,0.25) !important;
   border-radius: 12px !important;
 }
 
 /* ── Spinner ── */
-.stSpinner > div { border-top-color: var(--purple) !important; }
+.stSpinner > div { border-top-color: var(--accent) !important; }
+
+/* ── Labels above inputs ── */
+.stSelectbox label,
+.stTextArea label,
+.stTextInput label,
+.stFileUploader label {
+  color: var(--text2) !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+}
 </style>
 """
 
@@ -170,12 +237,12 @@ def _sidebar() -> str:
             '<div style="padding:0 4px 20px;">'
             '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">'
             '<div style="width:28px;height:28px;border-radius:8px;'
-            'background:linear-gradient(135deg,#6366f1,#8b5cf6);'
+            'background:linear-gradient(135deg,#0094d4,#005f8a);'
             'display:flex;align-items:center;justify-content:center;'
             'font-size:14px;">&#128737;</div>'
-            '<span style="font-size:1rem;font-weight:800;color:#f0f4ff;letter-spacing:-0.02em;">ScamSence</span>'
+            '<span style="font-size:1rem;font-weight:800;color:#e8f0ff;letter-spacing:-0.02em;">ScamSence</span>'
             '</div>'
-            '<div style="font-size:0.72rem;color:#4a5872;letter-spacing:0.04em;padding-left:36px;">AI SCAM DETECTOR</div>'
+            '<div style="font-size:0.72rem;color:#3a4a5c;letter-spacing:0.04em;padding-left:36px;">AI SCAM DETECTOR</div>'
             '</div>',
             unsafe_allow_html=True,
         )
@@ -228,9 +295,9 @@ def _sidebar() -> str:
 
         # Footer
         st.markdown(
-            '<div style="position:absolute;bottom:20px;left:0;right:0;padding:0 1rem;">'
-            '<div style="font-size:0.68rem;color:#2d3a52;">ScamSence MVP · Days 1–7 ✅</div>'
-            '<div style="font-size:0.68rem;color:#2d3a52;margin-top:2px;">API: localhost:8000</div>'
+            '<div style="margin-top:24px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.05);">'
+            '<div style="font-size:0.65rem;color:#253040;">ScamSence MVP · Days 1–8 ✅</div>'
+            '<div style="font-size:0.65rem;color:#253040;margin-top:2px;">API: localhost:8000</div>'
             '</div>',
             unsafe_allow_html=True,
         )
